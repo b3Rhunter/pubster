@@ -4,7 +4,7 @@ import EtherContext from '../EtherContext';
 import { ethers } from 'ethers';
 import contentPlatformAbi from '../abi.json';
 
-const ContentCreation = () => {
+const ContentCreation = ({setCreate}) => {
   const [creating, setCreating] = useState(false);
   const [contentType, setContentType] = useState('');
   const [title, setTitle] = useState('');
@@ -30,8 +30,13 @@ const ContentCreation = () => {
     setCreating(false);
   };
 
+  function closeCreate() {
+    setCreate(false)
+  }
+
   return (
     <Card className="mt-4 create">
+      <button onClick={closeCreate} className='closeCreate'>X</button>
       <Card.Header>
         <h4>Create Content</h4>
       </Card.Header>
@@ -67,6 +72,7 @@ const ContentCreation = () => {
           <Button style={{marginTop: "14px"}} variant="primary" onClick={createContent} disabled={creating}>
             {creating ? 'Creating...' : 'Create'}
           </Button>
+          
         </Form>
       </Card.Body>
     </Card>

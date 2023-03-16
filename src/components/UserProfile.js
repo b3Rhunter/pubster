@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Button, Card, Form } from 'react-bootstrap';
 import EtherContext from '../EtherContext';
 
-const UserProfile = () => {
+const UserProfile = ({setUser}) => {
   const { signer, contentPlatformContract } = useContext(EtherContext);
   const [profile, setProfile] = useState(null);
   const [displayName, setDisplayName] = useState('');
@@ -47,8 +47,13 @@ const UserProfile = () => {
     return <p>Loading user profile...</p>;
   }
 
+  function closeUser() {
+    setUser(false)
+  }
+
   return (
     <Card className="mt-4 profile">
+      <button className='closeUser' onClick={closeUser}>X</button>
       <Card.Header>
         <h4>User Profile</h4>
       </Card.Header>

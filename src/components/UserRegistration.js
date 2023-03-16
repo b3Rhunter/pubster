@@ -22,24 +22,17 @@ const UserRegistration = () => {
   };
 
   return (
-    <Card className="mt-4 register">
-      <Card.Header>
-        <h4>User Registration</h4>
-      </Card.Header>
-      <Card.Body>
-        <Form>
-          <Form.Group>
-            <Button
+          <div className='register'>
+            <button
+              className='registerBtn'
               variant="primary"
               onClick={registerUser}
               disabled={registering}
             >
-              {registering ? 'Registering...' : 'Register'}
-            </Button>
-          </Form.Group>
-        </Form>
-      </Card.Body>
-    </Card>
+              <p>{registering ? 'registering...' : 'register'}</p>
+            </button>
+            </div>
+
   );
 };
 
