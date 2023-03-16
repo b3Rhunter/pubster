@@ -1,0 +1,65 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: rgb(40, 39, 44) !important;
+  color: #fff !important;
+  padding: 14px;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.create {
+  background-color: rgb(40, 39, 44) !important;
+  border: 1px solid #fff !important;
+  border-radius: 14px !important;
+}
+
+.details {
+  background-color: rgb(40, 39, 44) !important;
+  color: #fff !important;
+  border: 1px solid #fff !important;
+  border-radius: 14px !important;
+}
+
+.listing {
+  background-color: rgb(40, 39, 44) !important;
+  color: #fff !important;
+  border: 1px solid #fff !important;
+  border-radius: 14px !important;
+}
+
+.listing thead {
+  color: #fff !important;
+}
+
+.listing td {
+  color: #fff !important;
+}
+
+.voting {
+  background-color: rgb(40, 39, 44) !important;  
+  color: #fff !important;
+  border: 1px solid #fff !important;
+  border-radius: 14px !important;
+}
+
+.profile {
+  background-color: rgb(40, 39, 44) !important;  
+  color: #fff !important;
+  border: 1px solid #fff !important;
+  border-radius: 14px !important;
+}
+
+.register {
+  background-color: rgb(40, 39, 44) !important;  
+  color: #fff !important;
+  border: 1px solid #fff !important;
+  border-radius: 14px !important;
+}
