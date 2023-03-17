@@ -28,6 +28,12 @@ code {
   justify-content: center;
 }
 
+.rewards {
+  position: fixed;
+  top: 55px;
+  right: 24px;
+}
+
 .create {
   background-color: var(--twitter-dark) !important;
   border: 1px solid #fff !important;
@@ -170,6 +176,21 @@ code {
   margin: 0px;
   padding: 0px;
   z-index: 999;
+}
+
+.claim {
+  background-color: #2b6ffe;
+  color: #fff;
+  position: relative;
+  bottom: 0px;
+  right: 50px;
+  font-size: 1em;
+  border: 1px solid #fff;
+  border-radius: 7px;
+  display: flex;
+  margin: 0px;
+  padding: 3px 7px;
+  padding-bottom: 7px;
 }
 
 .createBtn p {

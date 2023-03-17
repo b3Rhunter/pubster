@@ -9,6 +9,7 @@ import ContentCreation from './components/ContentCreation';
 import ContentListing from './components/ContentListing';
 import UserProfile from './components/UserProfile';
 import { ethers } from 'ethers';
+import tokenAbi from './tokenABI.json';
 import contentPlatformAbi from './abi.json';
 import logo from './imgs/baseLogo.png';
 
@@ -25,6 +26,8 @@ function App() {
   const [connected, setConnected] = useState(false)
   const [name, setName] = useState("")
 
+  const [balance, setBalance] = useState("")
+
   const connect = async () => {
     try {
       const web3Provider = new ethers.providers.Web3Provider(window.ethereum)
@@ -35,7 +38,12 @@ function App() {
       const address = signer.getAddress();
       setAddress(address)
       const contractAddress = '0xa3f39e95104b463f5fb7c8d76cd23f00C6260812';
+      const tokenAddress = '0x02E1EA569CCfCE9C20BE85BB8697939ff1873A10'
       const contentPlatformContract = new ethers.Contract(contractAddress, contentPlatformAbi, signer);
+      const tokenContract = new ethers.Contract(tokenAddress, tokenAbi, signer)
+      const getBalance = await tokenContract.balanceOf(address)
+      const parseBalance = ethers.utils.formatEther(getBalance)
+      setBalance(parseBalance)
       setContentPlatformContract(contentPlatformContract)
       const { ethereum } = window;
       if(ethereum) {
@@ -74,6 +82,7 @@ function App() {
     <EtherContext.Provider value={{ signer, account, address, contentPlatformContract }}>
       <button className='createBtn' onClick={startCreate}><p>+</p></button>
       <button className='userBtn' onClick={openUser}><p>P</p></button>
+      <p className='rewards'>reward tokens: {balance}</p>
     <Container>
       <div className='logoContainer'>
       <img className='logo' src={logo} alt="logo"/>

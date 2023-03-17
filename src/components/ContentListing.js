@@ -77,12 +77,16 @@ const ContentListing = () => {
     };
   }, [contentPlatformContract]);
 
+
+
   return (
     <><div className='content'>
       <div className="twitter-container">
       {contentList.slice().reverse().map((content, index) => {
-
           const contentIndex = contentList.length - index - 1;
+          const claim = async () => {
+            await contentPlatformContract.distributePayment(contentIndex);
+          }
           return (
           <div key={index} className="twitter-card">
             <div className="card-header">
@@ -94,6 +98,7 @@ const ContentListing = () => {
               <ContentVoting contentIndex={contentIndex} />
             </div>
             <div className="card-footer">
+              <button className='claim' onClick={claim}>claim</button>
               <div className="upvotes">
                 {content.upvotes ? 
                   ethers.utils.formatUnits(content.upvotes - content.downvotes, 0) : '0'}</div>
