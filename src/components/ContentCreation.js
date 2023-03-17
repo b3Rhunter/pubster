@@ -1,14 +1,32 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Button, Card, Form } from 'react-bootstrap';
 import EtherContext from '../EtherContext';
 import { ethers } from 'ethers';
 import contentPlatformAbi from '../abi.json';
+import '../transitions.css';
 
-const ContentCreation = ({ setCreate }) => {
+const ContentCreation = ({ setCreate, closing }) => {
   const [creating, setCreating] = useState(false);
   const [contentType, setContentType] = useState('');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    setVisible(true);
+    return () => {
+      setVisible(false);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!closing) {
+      setVisible(true);
+    } else {
+      setVisible(false);
+    }
+  }, [closing]);
 
   const createContent = async () => {
     setCreating(true);
@@ -31,14 +49,14 @@ const ContentCreation = ({ setCreate }) => {
   };
 
   function closeCreate() {
-    setCreate(false)
+    setCreate(closing)
   }
 
   return (
-    <Card className="mt-4 create">
+    <Card className="mt-4 create" style={{ opacity: visible ? 1 : 0, transition: 'opacity 300ms' }}>
       <button onClick={closeCreate} className='closeCreate'>X</button>
       <Card.Header>
-        <h4>Create Content</h4>
+        <h4>Create Post</h4>
       </Card.Header>
       <Card.Body>
         <Form>
@@ -46,7 +64,7 @@ const ContentCreation = ({ setCreate }) => {
             <Form.Label>Content Type</Form.Label>
             <Form.Control
               type="text"
-              placeholder="Enter content type"
+              placeholder="Enter post type"
               value={contentType}
               onChange={(e) => setContentType(e.target.value)}
             />
@@ -70,7 +88,7 @@ const ContentCreation = ({ setCreate }) => {
             />
           </Form.Group>
           <Button style={{marginTop: "14px"}} variant="primary" onClick={createContent} disabled={creating}>
-            {creating ? 'Creating...' : 'Create'}
+            {creating ? 'Posting...' : 'Post'}
           </Button>
           
         </Form>

@@ -12,6 +12,8 @@ import { ethers } from 'ethers';
 import tokenAbi from './tokenABI.json';
 import contentPlatformAbi from './abi.json';
 import logo from './imgs/baseLogo.png';
+import { CSSTransition } from 'react-transition-group';
+import './transitions.css';
 
 function App() {
 
@@ -27,6 +29,11 @@ function App() {
   const [name, setName] = useState("")
 
   const [balance, setBalance] = useState("")
+
+  const [closing, setClosing] = useState(false);
+  const [userClosing, setUserClosing] = useState(false);
+
+
 
   const connect = async () => {
     try {
@@ -88,6 +95,22 @@ function App() {
     setConnected(false)
   }
 
+  const handleClose = () => {
+    setClosing(true);
+    setTimeout(() => {
+      setClosing(false);
+      setCreate(false);
+    }, 300);
+  };
+
+  const handleUserClose = () => {
+    setUserClosing(true);
+    setTimeout(() => {
+      setUserClosing(false);
+      setUser(false);
+    }, 300);
+  };
+
   return (
     <EtherContext.Provider value={{ signer, account, address, contentPlatformContract }}>
       <button className='createBtn' onClick={startCreate}><p>+</p></button>
@@ -111,14 +134,28 @@ function App() {
 
       {create && (
         <>
-        
-        <ContentCreation setCreate={setCreate}/>
+        <CSSTransition
+        in={create}
+        timeout={300}
+        classNames="fade"
+        unmountOnExit
+        >
+          <ContentCreation setCreate={handleClose} closing={closing} />
+        </CSSTransition>
         </>
       )}
       <UserRegistration />
 
       {user && (
-        <UserProfile setUser={setUser} />
+
+<CSSTransition
+in={user}
+timeout={300}
+classNames="fade"
+unmountOnExit
+>
+        <UserProfile setUser={handleUserClose} closing={userClosing} />
+        </CSSTransition>
       )}
       
       <ContentListing />

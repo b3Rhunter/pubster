@@ -15,6 +15,14 @@ code {
     monospace;
 }
 
+button {
+  transition: 0.2s;
+}
+
+button:hover {
+  transform: translateY(-4px);
+}
+
 .logoContainer {
   display: flex;
   width: 100%;
@@ -26,6 +34,8 @@ code {
   margin: auto;
   align-items: center;
   justify-content: center;
+  margin-bottom: 24px;
+  margin-top: 7px;
 }
 
 .rewards {
@@ -93,6 +103,9 @@ code {
   overflow: hidden;
   cursor: pointer;
   transition: transform 0.3s;
+  -webkit-box-shadow:  -1px -1px 2px 0px rgba(255, 255, 255, 0.33);
+  -moz-box-shadow:  -1px -1px 2px 0px rgba(254, 254, 254, 0.33);
+  box-shadow:  -1px -1px 2px 0px rgba(255, 255, 255, 0.33);
 }
 
 /* Hover effect on cards */

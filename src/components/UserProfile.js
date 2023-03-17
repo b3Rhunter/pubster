@@ -1,13 +1,31 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Button, Card, Form } from 'react-bootstrap';
 import EtherContext from '../EtherContext';
+import { CSSTransition } from 'react-transition-group';
+import '../transitions.css';
 
-const UserProfile = ({setUser}) => {
+const UserProfile = ({ setUser, closing, handleUserClose }) => {
   const { signer, contentPlatformContract } = useContext(EtherContext);
   const [profile, setProfile] = useState(null);
   const [displayName, setDisplayName] = useState('');
   const [bio, setBio] = useState('');
   const [updating, setUpdating] = useState(false);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    setVisible(true);
+    return () => {
+      setVisible(false);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!closing) {
+      setVisible(true);
+    } else {
+      setVisible(false);
+    }
+  }, [closing]);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -23,6 +41,8 @@ const UserProfile = ({setUser}) => {
         console.error('Error while fetching user profile:', error);
       }
     };
+
+    
     
 
     fetchProfile();
@@ -48,19 +68,23 @@ const UserProfile = ({setUser}) => {
   }
 
   function closeUser() {
-    setUser(false)
+    setUser(handleUserClose)
   }
 
+
+
+
+
   return (
-    <Card className="mt-4 profile">
+    <Card className="mt-4 profile" style={{ opacity: visible ? 1 : 0, transition: 'opacity 300ms' }}>
       <button className='closeUser' onClick={closeUser}>X</button>
       <Card.Header>
-        <h4>User Profile</h4>
+        <h4>Profile</h4>
       </Card.Header>
       <Card.Body>
         <Form>
           <Form.Group controlId="displayName">
-            <Form.Label>Display Name</Form.Label>
+            <Form.Label>Name</Form.Label>
             <Form.Control
               type="text"
               placeholder="Enter display name"
