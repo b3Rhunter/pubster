@@ -35,11 +35,21 @@ function App() {
       setAccount(account)
       const signer = web3Provider.getSigner();
       setSigner(signer)
+      const chain = await signer.getChainId()
+      if (chain !== 84531) {
+        alert("Please switch to Base Goerli chain...")
+      }
       const address = signer.getAddress();
       setAddress(address)
       const contractAddress = '0xa3f39e95104b463f5fb7c8d76cd23f00C6260812';
       const tokenAddress = '0x02E1EA569CCfCE9C20BE85BB8697939ff1873A10'
       const contentPlatformContract = new ethers.Contract(contractAddress, contentPlatformAbi, signer);
+      const user = await contentPlatformContract.users(address)
+      const registered = user.registered
+      console.log(registered)
+      if (registered === false) {
+        alert("Please Register...")
+      }
       const tokenContract = new ethers.Contract(tokenAddress, tokenAbi, signer)
       const getBalance = await tokenContract.balanceOf(address)
       const parseBalance = ethers.utils.formatEther(getBalance)
