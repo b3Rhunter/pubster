@@ -10,6 +10,7 @@ import ContentListing from './components/ContentListing';
 import UserProfile from './components/UserProfile';
 import { ethers } from 'ethers';
 import contentPlatformAbi from './abi.json';
+import logo from './imgs/baseLogo.png';
 
 function App() {
 
@@ -33,7 +34,7 @@ function App() {
       setSigner(signer)
       const address = signer.getAddress();
       setAddress(address)
-      const contractAddress = '0xaf3b67786F945305b816498Fa8b0c53724fb3C8a';
+      const contractAddress = '0xa3f39e95104b463f5fb7c8d76cd23f00C6260812';
       const contentPlatformContract = new ethers.Contract(contractAddress, contentPlatformAbi, signer);
       setContentPlatformContract(contentPlatformContract)
       const { ethereum } = window;
@@ -74,7 +75,9 @@ function App() {
       <button className='createBtn' onClick={startCreate}><p>+</p></button>
       <button className='userBtn' onClick={openUser}><p>P</p></button>
     <Container>
-      <h1 className="text-center mt-5">PUBSTER</h1>
+      <div className='logoContainer'>
+      <img className='logo' src={logo} alt="logo"/>
+      </div>
       <button 
         className='connectBtn'
         variant="primary" 

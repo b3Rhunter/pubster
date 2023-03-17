@@ -3,16 +3,17 @@ import { Card, ListGroup, ListGroupItem } from 'react-bootstrap';
 import EtherContext from '../EtherContext';
 import { ethers } from 'ethers';
 
-const ContentDetails = ({ contentId }) => {
+const ContentDetails = ({ content }) => {
   const { signer, contentPlatformContract } = useContext(EtherContext);
-  const [content, setContent] = useState(null);
+
   const [creator, setCreator] = useState("")
-  const [name, setName] = useState("")
+  const [ name, setName] = useState("")
+  const [ getContent, setContent] = useState("")
 
   useEffect(() => {
     const fetchContentDetails = async () => {
       try {
-        const contentData = await contentPlatformContract.getContent(contentId);
+        const contentData = await contentPlatformContract.getContent(content);
         setContent(contentData);
           const web3Provider = new ethers.providers.Web3Provider(window.ethereum)
           const ensProvider = new ethers.providers.InfuraProvider('mainnet');
@@ -32,7 +33,7 @@ const ContentDetails = ({ contentId }) => {
     };
 
     fetchContentDetails();
-  }, [contentPlatformContract, contentId]);
+  }, [contentPlatformContract, content]);
 
   if (!content) {
     return <p>Connect to show posts...</p>;
@@ -44,7 +45,7 @@ const ContentDetails = ({ contentId }) => {
       <div className='twitter-container'>
         <div className="twitter-card">
           <div className='card-header'>
-            <p className='description'>{name}</p>
+            <p className='description'>{content.creator}</p>
           </div>
           <div className='card-body'>
           <p className='title'>{content.title}</p>
@@ -52,7 +53,7 @@ const ContentDetails = ({ contentId }) => {
             {content.description}
             </p>
           </div>
-          <div>Score: {ethers.utils.formatEther(content.upvotes)}</div>
+          <div>Score: {content.upvotes ? ethers.utils.formatEther(content.upvotes) : '0'}</div>
         </div>
         </div>
   );

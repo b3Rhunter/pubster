@@ -4,7 +4,7 @@ import EtherContext from '../EtherContext';
 import { ethers } from 'ethers';
 import contentPlatformAbi from '../abi.json';
 
-const ContentCreation = ({setCreate}) => {
+const ContentCreation = ({ setCreate }) => {
   const [creating, setCreating] = useState(false);
   const [contentType, setContentType] = useState('');
   const [title, setTitle] = useState('');
@@ -17,7 +17,7 @@ const ContentCreation = ({setCreate}) => {
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       await provider.send("eth_requestAccounts", []);
       const signer = provider.getSigner()
-      const contractAddress = '0xaf3b67786F945305b816498Fa8b0c53724fb3C8a';
+      const contractAddress = '0xa3f39e95104b463f5fb7c8d76cd23f00C6260812';
       const contentPlatformContract = new ethers.Contract(contractAddress, contentPlatformAbi, signer);
       const tx = await contentPlatformContract.createContent(contentType, title, description);
       await tx.wait();

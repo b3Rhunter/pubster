@@ -3,6 +3,8 @@ import { Card, Table } from 'react-bootstrap';
 import EtherContext from '../EtherContext';
 import ContentDetails from './ContentDetails';
 import ContentVoting from './ContentVoting';
+import ContentCreation from './ContentCreation';
+
 import { ethers } from 'ethers';
 
 const ContentListing = () => {
@@ -11,12 +13,14 @@ const ContentListing = () => {
   const [selectedContentId, setSelectedContentId] = useState(null);
   const [contentCount, setContentCount] = useState(null);
   const [creators, setCreators] = useState([]);
+  const [create, setCreate] = useState(false);
 
-  useEffect(() => {
-    const fetchContentList = async () => {
+
+      const fetchContentList = async () => {
       if (!contentPlatformContract) return;
       try {
         const contentCount = await contentPlatformContract.getContentCount();
+        console.log(ethers.utils.formatUnits(contentCount, 0))
         const contentPromises = [];
 
         for (let i = 0; i < contentCount; i++) {
@@ -32,6 +36,7 @@ const ContentListing = () => {
       }
     };
 
+  useEffect(() => {
     fetchContentList();
   }, [contentPlatformContract]);
 
@@ -50,45 +55,57 @@ const ContentListing = () => {
     const creatorsData = await Promise.all(creatorsPromises);
     setCreators(creatorsData);
   };
-  
 
+  useEffect(() => {
+    if (!contentPlatformContract) return;
 
-  const handleRowClick = (contentId) => {
-    setSelectedContentId(contentId);
-  };
+    const onContentCreated = async (contentId) => {
+      const contentData = await contentPlatformContract.getContent(contentId.toNumber());
+      setContentList((prevContentList) => [...prevContentList, contentData]);
+      const ensProvider = new ethers.providers.InfuraProvider('mainnet');
+      const address = contentData.creator;
+      const displayAddress = address?.substr(0, 6) + "...";
+      const ens = await ensProvider.lookupAddress(address);
+      const creator = ens !== null ? ens : displayAddress;
+      setCreators((prevCreators) => [...prevCreators, creator]);
+    };
 
-  function closeDetails() {
-    setSelectedContentId(null)
-  }
+    const listener = contentPlatformContract.on("ContentCreated", onContentCreated);
+
+    return () => {
+      contentPlatformContract.off("ContentCreated", listener);
+    };
+  }, [contentPlatformContract]);
 
   return (
     <><div className='content'>
       <div className="twitter-container">
-        {contentList.slice().reverse().map((content, index) => (
-          <div key={index} onClick={() => handleRowClick(index)} className="twitter-card">
+      {contentList.slice().reverse().map((content, index) => {
+
+          const contentIndex = contentList.length - index - 1;
+          return (
+          <div key={index} className="twitter-card">
             <div className="card-header">
               <div className="index">{creators.slice().reverse()[index]}</div>
             </div>
             <div className="card-body">
               <div className="title">{content.title}</div>
               <div className="description">{content.description}</div>
-              <ContentVoting selectedContentId={selectedContentId} />
+              <ContentVoting contentIndex={contentIndex} />
             </div>
             <div className="card-footer">
-              <div className="upvotes">{ethers.utils.formatEther(content.upvotes)}</div>
+              <div className="upvotes">
+                {content.upvotes ? 
+                  ethers.utils.formatUnits(content.upvotes - content.downvotes, 0) : '0'}</div>
             </div>
 
           </div>
-        ))}
+          );
+        })}
       </div>
 
     </div>
-    <div className='contentDetails'>
-        {selectedContentId !== null &&
-          <div onClick={closeDetails} className='details'>
-            <ContentDetails creators={creators} contentId={selectedContentId} />
-          </div>}
-      </div></>
+</>
   );
 };
 
